@@ -1,0 +1,25 @@
+grid = new Ext.grid.EditorGridPanel
+                        store: _store,
+                        columns: data.columns,
+                        width: 'auto',
+                        height: height,
+                        loadMask: mask,
+                        clicksToEdit: 0,
+                        viewConfig: config,
+                        plugins: ($.isArray(data.groups)? group : undefined)
+                    });
+
+                    grid.render(Ext.select(this.id, true));
+                }.bind(this));
+            }
+
+            this.loadData = function(pharmId){ 
+                this.pharmId = pharmId;
+                _store.rejectChanges();
+                $.getJSON('./modules/units/units.php?action=GET_FORMDATA&pharmId=' + pharmId + '&projectId=' + _param.projectId + '&stageId=' + _param.stageId + '&rnd='+Math.random(), function(data){
+                    _store.loadData(data.rows);
+                    $.unblockUI();
+                });
+            }
+        }
+        Form.inherits(App.VisualElement);
